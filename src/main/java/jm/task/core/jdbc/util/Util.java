@@ -10,6 +10,7 @@ import jm.task.core.jdbc.model.User;
 
 import java.util.Properties;
 
+
 public class Util {
     private static SessionFactory sessionFactory;
 
@@ -40,6 +41,7 @@ public class Util {
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             } catch (Exception e) {
+                sessionFactory.close();
                 e.printStackTrace();
             }
         }
