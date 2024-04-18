@@ -41,7 +41,6 @@ public class Util {
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             } catch (Exception e) {
-                sessionFactory.close();
                 e.printStackTrace();
             }
         }

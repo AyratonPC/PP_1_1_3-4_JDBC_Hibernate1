@@ -4,6 +4,7 @@ import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import javax.persistence.Entity;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 public class UserDaoHibernateImpl implements UserDao {
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public UserDaoHibernateImpl() {
         sessionFactory = Util.getSessionFactory();
@@ -27,6 +28,8 @@ public class UserDaoHibernateImpl implements UserDao {
             session.createSQLQuery(sql).executeUpdate();
             session.getTransaction().commit();
             session.clear();
+        } catch (Exception e) {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
         }
     }
 
@@ -38,6 +41,8 @@ public class UserDaoHibernateImpl implements UserDao {
             session.createSQLQuery(sql).executeUpdate();
             session.getTransaction().commit();
             session.clear();
+        } catch (Exception e) {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
         }
 
     }
@@ -51,6 +56,8 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.printf("User с именем — %s добавлен в базу данных\n", name);
             session.clear();
+        } catch (Exception e) {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
         }
     }
 
@@ -63,6 +70,8 @@ public class UserDaoHibernateImpl implements UserDao {
             session.delete(user);
             session.getTransaction().commit();
             session.clear();
+        } catch (Exception e) {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
         }
     }
 
@@ -80,6 +89,8 @@ public class UserDaoHibernateImpl implements UserDao {
             session.createQuery("DELETE FROM User").executeUpdate();
             session.getTransaction().commit();
             session.clear();
+        } catch (Exception e) {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
         }
     }
 }
